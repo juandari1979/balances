@@ -1,115 +1,51 @@
-//  OpenShift sample Node application
-var express = require('express'),
-    fs      = require('fs'),
-    app     = express(),
-    eps     = require('ejs'),
-    morgan  = require('morgan');
-    
-Object.assign=require('object-assign')
+// server.js
 
-app.engine('html', require('ejs').renderFile);
-app.use(morgan('combined'))
+// modules =================================================
+var express        = require('express');
+var app            = express();
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
-console.log('MongoURL(1) %s', mongoURL);
+//console.log('Starting');
 
-if ( mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
-  console.log('MongoURL(2) %s', mongoURL); 
-  var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
-      mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'] || 'localhost',
-      mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'] || 27017,
-      mongoDatabase = process.env[mongoServiceName + '_DATABASE'] || 'Balances',
-      mongoPassword = process.env[mongoServiceName + '_PASSWORD']
-      mongoUser = process.env[mongoServiceName + '_USER'];
+// configuration ===========================================
 
-  if (mongoHost && mongoPort && mongoDatabase) {
-    mongoURLLabel = mongoURL = 'mongodb://';
-    if (mongoUser && mongoPassword) {
-      mongoURL += mongoUser + ':' + mongoPassword + '@';
-    }
-    // Provide UI label that excludes user id and pw
-    mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
-    mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
-  }
-}
-else if( mongoURL == null )
-{
-    mongoURLLabel = 'mongodb://localhost:27017/Balances';
-    mongoURL = 'mongodb://localhost:27017/Balances';
-}
-console.log('MongoURL(3) %s', mongoURL);
+// config files
+var db = require('./config/db');
+db.initDb();
 
-var db = null,
-    dbDetails = new Object();
+// set our port
+var port = process.env.PORT || 8080;
 
-var initDb = function(callback) {
-  if (mongoURL == null) return;
+// connect to our mongoDB database
+// (uncomment after you enter in your own credentials in config/db.js)
+// mongoose.connect(db.url);
 
-  var mongodb = require('mongodb');
-  if (mongodb == null) return;
+// get all data/stuff of the body (POST) parameters
+// parse application/json
+app.use(bodyParser.json());
 
-  mongodb.connect(mongoURL, function(err, conn) {
-    if (err) {
-      callback(err);
-      return;
-    }
+// parse application/vnd.api+json as json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-    db = conn;
-    dbDetails.databaseName = db.databaseName;
-    dbDetails.url = mongoURLLabel;
-    dbDetails.type = 'MongoDB';
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-    console.log('Connected to MongoDB at: %s', mongoURL);
-  });
-};
+// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(methodOverride('X-HTTP-Method-Override'));
 
-app.get('/', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    var col = db.collection('counts');
-    // Create a document with request IP and current time of request
-    col.insert({ip: req.ip, date: Date.now()});
-    col.count(function(err, count){
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
-    });
-  } else {
-    res.render('index.html', { pageCountMessage : null});
-  }
-});
+// set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/public'));
 
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
-    });
-  } else {
-    res.send('{ pageCount: -1 }');
-  }
-});
+// routes ==================================================
+require('./app/routes')(app); // configure our routes
 
-// error handling
-app.use(function(err, req, res, next){
-  console.error(err.stack);
-  res.status(500).send('Something bad happened!');
-});
+// start app ===============================================
+// startup our app at http://localhost:8080
+app.listen(port);
 
-initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
-});
+// shoutout to the user
+console.log('Magic happens on port ' + port);
 
-app.listen(port, ip);
-console.log('Server running on http://%s:%s', ip, port);
-
-module.exports = app ;
+// expose app
+exports = module.exports = app;
