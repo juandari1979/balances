@@ -1,6 +1,6 @@
 console.log("DB REQUIRED");
 var mongoConnManager = {
-    url : 'mongodb://localhost:27017/Balances',
+    url : process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost:27017/Balances',
     conn : null,
     initDb : function(callback) {
         if (mongoConnManager.conn != null) return;
