@@ -1,6 +1,6 @@
 console.log("DB REQUIRED");
 var mongoConnManager = {
-    url : process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost:27017/Balances',
+    url : process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost:27017/',
     conn : null,
     initDb : function(callback) {
         if (mongoConnManager.conn != null) return;
@@ -21,7 +21,9 @@ var mongoConnManager = {
 
             mongoConnManager.conn = conn;
             console.log('Connected to MongoDB at: %s', mongoConnManager.url);
+            callback();
         });
     }
-}
+};
+mongoConnManager.url = mongoConnManager.url + 'balances';
 module.exports = mongoConnManager;
