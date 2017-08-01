@@ -3,7 +3,10 @@ angular.module('BalanceMod').factory('ExpenseService', [
     function($resource) {
     var resources = {
         expenses: $resource(
-            '/api/expense/'
+            '/api/expense/:id', null,
+            {
+                'put': {method: 'PUT'}
+            }
         )
     };
 
@@ -13,7 +16,10 @@ angular.module('BalanceMod').factory('ExpenseService', [
             },
         query: function () {
                 return resources.expenses.query().$promise;
-            }
+            },
+        create: function(expense){
+            return resources.expenses.put(expense).$promise;
+        }
     }
     return factory;
 }]);

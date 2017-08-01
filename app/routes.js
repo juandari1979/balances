@@ -44,9 +44,15 @@ var Expense = require('./models/expense');
 
         app.put('/api/expense', function(req, res) {
             console.log('PUT CALLED WITH ' + req);
-            Expense.create(req.body).then(
+            var expenseToCreate = req.body;
+            if(expenseToCreate.date != undefined) {
+                var tmpDate = new Date(expenseToCreate.date);
+                expenseToCreate.date = new Date(Date.UTC(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate(), 0, 0, 0, 0));
+                console.log("Modified date " + expenseToCreate.date);
+            }
+            Expense.create(expenseToCreate).then(
                     function(data){
-                        res.end();
+                        res.end(data);
                     },
                     function(error){
                         res.send(500);

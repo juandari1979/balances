@@ -6,11 +6,18 @@ var db = require('../../config/db');
 console.log('DB con exp ' + db.conn);
 var col = db.conn.collection('Expenses');
 
+var validateExpenseAsObject = function(expense){
+    return !(expense == undefined || expense.type == undefined || expense.amount == undefined || expense.date == undefined || expense.month == undefined || expense.year == undefined);
+};
+
 var dbObject = {
-    create: function(document){
-        document.date = new Date(document.date);
+    create: function(expense){
         return new Promise(function(resolve, reject){
-            col.insert(document).then(
+            if(!validateExpenseAsObject(expense)){
+                console.log("Malformed object");
+                reject('Malformed object');
+            }
+            col.insert(expense).then(
                 function(result){
                     resolve();
                 },

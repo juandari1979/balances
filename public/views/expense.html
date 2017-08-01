@@ -1,10 +1,46 @@
 <!-- public/views/nerd.html -->
 
 <div class="jumbotron text-center">
-    <h1>Nerds and Proud</h1>
-
-    <p>{{ tagline }}</p>
-
-    <p>{{ m_expenses[0]._id }}
-    <p>{{ m_expenses[1]._id }}
+    <h1>Add expense</h1>
+    <h2>{{expenseCtrl.notification}}</h2>
+<form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="type">Type:</label>
+      <div class="col-sm-10">
+          <select class="form-control" id="type" ng-model="expenseCtrl.expense.type">
+            <option value="TF">Pago tatiana</option>
+            <option value="JD">Pago JuanD</option>
+            <option value="GA">Gasolina</option>
+            <option value="ME">Mercado</option>
+            <option value="AR">Arriendo</option>
+            <option value="EM">Empleada</option>
+            <option value="CL">Celular</option>
+            <option value="PJ">Peaje</option>
+            <option value="LZ">Luz</option>
+            <option value="AG">Agua</option>
+            <option value="BC">BabyCare</option>
+            <option value="LE">Leela</option>
+            <option value="SG">Seguro Carro</option>
+            <option value="LX">Lexus</option>
+            <option value="PI">Piscina</option>
+            <option value="LD">Landscape</option>
+            <option value="HO">Hoa</option>
+            <option value="LF">Life Insurance</option>
+            <option value="OT">Otros</option>
+            <option value="IT">Internet</option>
+          </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="amount">Amount:</label>
+      <div class="col-sm-10"><input type="number" class="form-control" id="amount" ng-model="expenseCtrl.expense.amount"></div>
+      <label class="control-label col-sm-2" for="date">Date:</label>
+      <div class="col-sm-10"><input type="date" class="form-control" id="date" ng-model="expenseCtrl.expense.date"></div>
+      <label class="control-label col-sm-2" for="month">Month:</label>
+      <div class="col-sm-10"><input type="number" class="form-control" id="month" ng-model="expenseCtrl.expense.month"></div>
+      <label class="control-label col-sm-2" for="year">Year:</label>
+      <div class="col-sm-10"><input type="number" class="form-control" id="year" ng-model="expenseCtrl.expense.year"></div>
+    </div>
+    <button type="button" class="btn btn-success" ng-click="expenseCtrl.saveExpense();">Save</button>
+</form>
 </div>

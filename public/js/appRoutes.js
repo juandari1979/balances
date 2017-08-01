@@ -12,7 +12,8 @@
         // nerds page that will use the NerdController
         .when('/expense', {
             templateUrl: 'views/expense.html',
-            controller: 'ExpenseController'
+            controller: 'ExpenseController',
+            controllerAs: 'expenseCtrl'
         });
 
     $locationProvider.html5Mode(true);
