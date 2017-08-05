@@ -9,7 +9,14 @@
             controller: 'MainController'
         })
 
-        // nerds page that will use the NerdController
+        // expense add page
+        .when('/expense-dashboard', {
+            templateUrl: 'views/expense-dashboard.html',
+            controller: 'ExpenseDashboardController',
+            controllerAs: 'expenseDashCtrl'
+        })
+
+        // expense add page
         .when('/expense', {
             templateUrl: 'views/expense.html',
             controller: 'ExpenseController',

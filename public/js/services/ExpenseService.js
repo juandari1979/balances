@@ -5,7 +5,8 @@ angular.module('BalanceMod').factory('ExpenseService', [
         expenses: $resource(
             '/api/expense/:id', null,
             {
-                'put': {method: 'PUT'}
+                'put': {method: 'PUT'},
+                'dashboard' : {method: 'GET', params: {year: '@year', month: '@month'}, isArray: true }
             }
         )
     };
@@ -19,6 +20,9 @@ angular.module('BalanceMod').factory('ExpenseService', [
             },
         create: function(expense){
             return resources.expenses.put(expense).$promise;
+        },
+        dashboard: function(year, month){
+            return resources.expenses.dashboard({year: year, month:month}).$promise;
         }
     }
     return factory;
