@@ -6,23 +6,22 @@ var app            = express();
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 
-//console.log('Starting');
+global.logger || (global.logger = require('./app/helpers/logger'));
+global.formatter || (global.formatter = require('./app/helpers/formatting'));
+
+global.logger.debug('Starting');
 
 // configuration ===========================================
 
 // config files
 var db = require('./config/db');
-console.log('Calling db init');
+global.logger.debug('Calling db init');
 db.initDb(function(){
 
     // set our port
     var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
     var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
 
-
-    // connect to our mongoDB database
-    // (uncomment after you enter in your own credentials in config/db.js)
-    // mongoose.connect(db.url);
 
     // get all data/stuff of the body (POST) parameters
     // parse application/json
@@ -46,7 +45,7 @@ db.initDb(function(){
     // start app ===============================================
     // startup our app at http://localhost:8080
     app.listen(server_port, server_ip_address, function(){
-      console.log("Listening on " + server_ip_address + ", server_port " + server_port)
+      global.logger.info("Listening on " + server_ip_address + ", server_port " + server_port)
     });
 
 });

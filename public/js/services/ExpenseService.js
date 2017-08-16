@@ -6,7 +6,7 @@ angular.module('BalanceMod').factory('ExpenseService', [
             '/api/expense/:id', null,
             {
                 'put': {method: 'PUT'},
-                'dashboard' : {method: 'GET', params: {year: '@year', month: '@month'}, isArray: true }
+                'dashboard' : {method: 'GET', params: {year: '@year', month: '@month'}, url: '/api/allocations/dashboard/', isArray: true }
             }
         )
     };

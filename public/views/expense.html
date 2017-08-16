@@ -1,51 +1,46 @@
 <!-- public/views/expense.html -->
 
 <!-- <div class="jumbotron text-center"> -->
-    <h1>Add expense</h1>
-    <h2>{{expenseCtrl.notification}}</h2>
+<h1>Add expense</h1>
+<div ng-if="expenseCtrl.hasNotification()" class="alert alert-success alert-dismissable fade in">
+  <a href="#" class="close" aria-label="close" ng-click="expenseCtrl.clearNotification();">&times;</a>
+  {{expenseCtrl.notification}}
+</div>
 <form class="form-horizontal">
     <div class="form-group">
-      <label class="control-label col-xs-3" for="type">Type:</label>
-      <div class="col-xs-9">
-          <select class="form-control" id="type" ng-model="expenseCtrl.expense.type">
-            <option value="TF">Pago tatiana</option>
-            <option value="JD">Pago JuanD</option>
-            <option value="GA">Gasolina</option>
-            <option value="ME">Mercado</option>
-            <option value="AR">Arriendo</option>
-            <option value="EM">Empleada</option>
-            <option value="CL">Celular</option>
-            <option value="PJ">Peaje</option>
-            <option value="LZ">Luz</option>
-            <option value="AG">Agua</option>
-            <option value="BC">BabyCare</option>
-            <option value="LE">Leela</option>
-            <option value="SG">Seguro Carro</option>
-            <option value="LX">Lexus</option>
-            <option value="PI">Piscina</option>
-            <option value="LD">Landscape</option>
-            <option value="HO">Hoa</option>
-            <option value="LF">Life Insurance</option>
-            <option value="OT">Otros</option>
-            <option value="IT">Internet</option>
-          </select>
-      </div>
+        <label class="control-label col-xs-3" for="type">Type:</label>
+        <div class="col-xs-9">
+            <select class="form-control" id="type" ng-options="item.id as item.label for item in expenseCtrl.expenseTypes" ng-model="expenseCtrl.expense.type"></select>
+        </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-xs-3" for="amount">Amount:</label>
-      <div class="col-xs-9"><input type="number" class="form-control" id="amount" ng-model="expenseCtrl.expense.amount"></div>
+        <label class="control-label col-xs-3" for="amount">Amount:</label>
+        <div class="col-xs-9"><input type="number" class="form-control" id="amount" ng-model="expenseCtrl.expense.amount"></div>
     </div>
     <div class="form-group">
-      <label class="control-label col-xs-3" for="date">Date:</label>
-      <div class="col-xs-9"><input type="date" class="form-control" id="date" ng-model="expenseCtrl.expense.date"></div>
+        <label class="control-label col-xs-3" for="date">Date:</label>
+        <div class="col-xs-7"><input type="date" class="form-control" id="date" ng-model="expenseCtrl.expense.date"></div>
+        <div class="col-xs-2 no-h-pad"><button type="button" class="btn btn-primary" ng-click="expenseCtrl.setCurrentDate();"><i class="fa fa-calendar-times-o" aria-hidden="true"></i></button></div>
     </div>
     <div class="form-group">
-      <label class="control-label col-xs-3" for="month">Month:</label>
-      <div class="col-xs-9"><input type="number" class="form-control" id="month" ng-model="expenseCtrl.expense.month"></div>
+        <label class="control-label col-xs-3" for="month">Month:</label>
+        <div class="col-xs-9"><input type="number" class="form-control" id="month" ng-model="expenseCtrl.expense.month"></div>
     </div>
     <div class="form-group">
-      <label class="control-label col-xs-3" for="year">Year:</label>
-      <div class="col-xs-9"><input type="number" class="form-control" id="year" ng-model="expenseCtrl.expense.year"></div>
+        <label class="control-label col-xs-3" for="year">Year:</label>
+        <div class="col-xs-7"><input type="number" class="form-control" id="year" ng-model="expenseCtrl.expense.year"></div>
+        <div class="col-xs-2 no-h-pad"><button type="button" class="btn btn-primary" ng-click="expenseCtrl.setMonthAndYearFromDate();"><i class="fa fa-copy" aria-hidden="true"></i></button></div>
     </div>
-    <button type="button" class="btn btn-success" ng-click="expenseCtrl.saveExpense();">Save</button>
+    <div class="form-group">
+        <label class="control-label col-xs-3" for="notes">Notes:</label>
+        <div class="col-xs-9"><input type="text" class="form-control" id="notes" ng-model="expenseCtrl.expense.notes"></div>
+    </div>
+	<div class="form-group">
+        <label class="control-label col-xs-3" for="matchPago">Match to:</label>
+        <div class="col-xs-9"><button type="button" class="btn btn-primary" ng-click="expenseCtrl.toggleMatchPago();">{{expenseCtrl.matchPago}}</div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-6 text-left"><button type="button" class="btn btn-success" ng-click="expenseCtrl.saveExpense();">Save</button></div>
+        <div class="col-xs-6 text-right"><button type="button" class="btn btn-default" ng-click="expenseCtrl.cancelExpense();">Cancel</button></div>
+    </div>
 </form>

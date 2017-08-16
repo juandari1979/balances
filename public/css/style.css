@@ -1,1 +1,7 @@
 body { padding-top:30px; }
+
+.button-menu { margin-top: 2px; margin-bottom: 2px; }
+.no-h-pad { padding-right: 0px; padding-left: 0px; }
+.prog-xs { margin-bottom: 10px; }
+.prog-dark-bg { background-image: linear-gradient(to bottom,#e4e4e4 0,#6d6d6d 100%); }
+.no-wrap-text { text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}

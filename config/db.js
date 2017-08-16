@@ -1,4 +1,4 @@
-console.log("DB REQUIRED");
+global.logger.debug("DB REQUIRED");
 var mongoConnManager = {
     url : process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost:27017/',
     conn : null,
@@ -8,19 +8,19 @@ var mongoConnManager = {
         var mongodb = require('mongodb');
         if (mongodb == null)
         {
-            console.log('Something went wrong, mongodb is null!!!');
+            global.logger.debug('Something went wrong, mongodb is null!!!');
             return;
         }
 
         mongodb.connect(mongoConnManager.url, function(err, conn) {
             if (err) {
-                console.log('ERROR CONNECTING TO MONGO ' + err);
+                global.logger.debug('ERROR CONNECTING TO MONGO ' + err);
                 //callback(err);
                 return;
             }
 
             mongoConnManager.conn = conn;
-            console.log('Connected to MongoDB at: %s', mongoConnManager.url);
+            global.logger.debug('Connected to MongoDB at: %s', mongoConnManager.url);
             callback();
         });
     }
