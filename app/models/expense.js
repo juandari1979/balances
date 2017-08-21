@@ -75,10 +75,15 @@ var dbObject = {
         var year_int = parseInt(year);
         var month_int = parseInt(month);
         return new Promise(function(resolve, reject){
-            global.logger.debug('FINDING BY MONTH ' + firstDay.toDateString() + " - " + lastDay.toDateString());
+            global.logger.debug('FINDING BY MONTH ' + month_int + " - " + year_int + "-" + type);
             if(db){
                 global.logger.debug("COLLECTION expenses found");
-                col.find({$and: [{"month": month_int}, {"year":year_int}]}).toArray(function(error, docArray) {
+                var findClause = {$and: [{"month": month_int}, {"year":year_int}]}; 
+                if(type){
+                    global.logger.debug("Adding type to the find clause");
+                    findClause.$and.push({"type":type});
+                }
+                col.find(findClause).toArray(function(error, docArray) {
                     if(error){
                         reject("Error reading from cursor " + error);
                     }else{

@@ -17,7 +17,7 @@ var Allocation = require('./models/expenseAllocation');
         // sample api route
         app.get('/api/expense', function(req, res) {
             if(req.query.year && req.query.month){
-                Expense.findByMonth(parseInt(req.query.year), parseInt(req.query.month)).then(
+                Expense.findByMonth(parseInt(req.query.year), parseInt(req.query.month), req.query.type).then(
                     function(expenses){
                         res.json(expenses);
                     },

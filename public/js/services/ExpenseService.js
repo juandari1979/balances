@@ -15,8 +15,12 @@ angular.module('BalanceMod').factory('ExpenseService', [
         get: function (id) {
                 return resources.expenses.get({ expenseId: id }).$promise;
             },
-        query: function () {
-                return resources.expenses.query().$promise;
+        query: function (month, year, type) {
+                var queryObject = {};
+                if(month && month != "") queryObject.month = month;
+                if(year && year != "") queryObject.year = year;
+                if(type && type != "") queryObject.type = type;
+                return resources.expenses.query(queryObject).$promise;
             },
         create: function(expense){
             return resources.expenses.put(expense).$promise;

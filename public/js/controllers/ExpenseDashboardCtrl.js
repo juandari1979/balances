@@ -4,6 +4,7 @@
         var vm = this;
         vm.notification = '';
         vm.dashboard = { };
+        vm.dashTotals = { amount : 0, usedAmount : 0 };
         var today = new Date();
         vm.months = [{id : 1, label : "Enero"}, {id : 2, label : "Febrero"}, {id : 3, label : "Marzo"}, {id : 4, label : "Abril"}, {id : 5, label : "Mayo"}, {id : 6, label : "Junio"}, {id : 7, label : "Julio"}, {id : 8, label : "Agosto"}, {id : 9, label : "Septiembre"}, {id : 10, label : "Octubre"}, {id : 11, label : "Noviembre"}, {id : 12, label : "Diciembre"}];
         vm.years = [2017, 2018, 2019, 2020, 2021];
@@ -14,9 +15,15 @@
             var month = vm.filter.month;
             ExpenseService.dashboard(year, month).then(function(val){
                 console.log("Dashboard loaded succesfully");
+                vm.dashTotals.amount = 0;
+                vm.dashTotals.usedAmount = 0;
                 val.forEach(function(expense) {
                     expense.amount = expense.amount * vm.getTypeMultiplier(expense.type);
                     expense.usedAmount = expense.usedAmount * vm.getTypeMultiplier(expense.type);
+                    if( expense.type !== "TF" && expense.type !== "JD" ){
+                        vm.dashTotals.amount += expense.amount;
+                        vm.dashTotals.usedAmount += expense.usedAmount;
+                    }
                 });
                 vm.dashboard = val;
             }).catch(function(err){

@@ -17,12 +17,19 @@
         </div>
     </div>
 </form>
-<div ng-repeat="alloc in expenseDashCtrl.dashboard track by alloc.type" class="col-xs-12">
 
+    <div class="progress col-xs-12 no-h-pad prog-xs prog-dark-bg">
+        <div class="progress-bar" ng-class="expenseDashCtrl.getProgressClass(expenseDashCtrl.dashTotals)" role="progressbar" aria-valuenow="{{expenseDashCtrl.dashTotals.usedAmount | number : 0}}" aria-valuemin="0" aria-valuemax="{{expenseDashCtrl.dashTotals.amount | number : 0}}" style="width:{{expenseDashCtrl.getPercentageForBar(expenseDashCtrl.dashTotals) | number : 0}}%">
+            <span style="white-space: nowrap;">{{expenseDashCtrl.dashTotals.usedAmount | number : 2 }} / {{expenseDashCtrl.dashTotals.amount | number : 2}}</span>
+        </div>
+    </div>
+<div ng-repeat="alloc in expenseDashCtrl.dashboard track by alloc.type">
     <div class="col-xs-3 no-wrap-text" style="padding-left:0px"><span>{{alloc.description}}</span></div>
     <div class="progress col-xs-9 no-h-pad prog-xs prog-dark-bg">
-        <div class="progress-bar" ng-class="expenseDashCtrl.getProgressClass(alloc)" role="progressbar" aria-valuenow="{{alloc.usedAmount | number : 0}}" aria-valuemin="0" aria-valuemax="{{alloc.amount | number : 0}}" style="width:{{expenseDashCtrl.getPercentageForBar(alloc) | number : 0}}%">
-            <span style="white-space: nowrap;">{{alloc.usedAmount | number : 2 }} / {{alloc.amount | number : 2}}</span>
-        </div>
+        <a ng-href="expense-detail?month={{expenseDashCtrl.filter.month}}&year={{expenseDashCtrl.filter.year}}&type={{alloc.type}}&desc={{alloc.description}}">
+            <div class="progress-bar" ng-class="expenseDashCtrl.getProgressClass(alloc)" role="progressbar" aria-valuenow="{{alloc.usedAmount | number : 0}}" aria-valuemin="0" aria-valuemax="{{alloc.amount | number : 0}}" style="width:{{expenseDashCtrl.getPercentageForBar(alloc) | number : 0}}%">
+                <span style="white-space: nowrap;">{{alloc.usedAmount | number : 2 }} / {{alloc.amount | number : 2}}</span>
+            </div>
+        </a>
     </div>
 </div>

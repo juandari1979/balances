@@ -9,11 +9,18 @@
             controller: 'MainController'
         })
 
-        // expense add page
+        // expense dashboard page
         .when('/expense-dashboard', {
             templateUrl: 'views/expense-dashboard.html',
             controller: 'ExpenseDashboardController',
             controllerAs: 'expenseDashCtrl'
+        })
+        
+        // expense details page
+        .when('/expense-detail', {
+            templateUrl: 'views/expense-detail.html',
+            controller: 'ExpenseDetailController',
+            controllerAs: 'expenseDetCtrl'
         })
 
         // expense add page
